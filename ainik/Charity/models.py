@@ -14,3 +14,8 @@ class UserCharity(models.Model):
     class Meta:
         unique_together = ('user', 'charity')
 
+class CharityWork(models.Model):
+    title = models.CharField(max_length=100)
+    type = models.IntegerField()
+    charityName = models.ForeignKey(Charity, on_delete=models.CASCADE)
+    

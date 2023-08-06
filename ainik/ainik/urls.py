@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include
-from Charity.views import CharityCreateView
+from Charity.views import CharityCreateView, CharityWorkView
 
 
 
@@ -24,5 +24,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
-    path('users/<int:user_id>/charities/', CharityCreateView.as_view(), name='charity_create')
+    path('users/<int:user_id>/charities/', CharityCreateView.as_view(), name='charity_create'),
+    path('charity/<int:charity_id>/addwork', CharityWorkView.as_view(), name='add_charity_work')
 ]
