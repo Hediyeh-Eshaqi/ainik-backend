@@ -2,13 +2,14 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import UserCharity, CharityWork
+from .models import UserCharity, CharityWork, Charity
 from .serializers import CharitySerializer, ChairtyWorkSerialezer
 
 
 
-class CharityCreateView(APIView):
-    def post(self, request, user_id):
+class CharityView(APIView):
+    def post(self, request):
+        user_id = request.user.id
         serializer = CharitySerializer(data=request.data)
         if serializer.is_valid():
             charity = serializer.save()
@@ -16,7 +17,13 @@ class CharityCreateView(APIView):
             user_charity.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    def delete(self, request, charity_id):
+        user = request.user
+        havePermission = UserCharity.objects.filter(charity = charity_id, user = user).exists()
+        if havePermission:
+            Charity.objects.filter(id=charity_id).delete()
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_403_FORBIDDEN)
 
 class CharityWorkView(APIView):
     def post(self, request, charity_id):
