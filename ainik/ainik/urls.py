@@ -17,15 +17,16 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 from Charity.views import CharityView, CharityWorkView
-
+from Accounts.views import MyCharityView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
-    path('users/charities/create', CharityView.as_view(), name='create_charity'),
+    path('charity/create', CharityView.as_view(), name='create_charity'),
     path('charity/<int:charity_id>/addwork', CharityWorkView.as_view(), name='add_charity_work'),
     path('charity/<int:charity_id>/delete/<int:work_id>', CharityWorkView.as_view(), name='delete_charity_work'),
-    path('charity/<int:charity_id>/delete', CharityView.as_view(), name='delete_charity')
+    path('charity/<int:charity_id>/delete', CharityView.as_view(), name='delete_charity'),
+    path('user/charites/', MyCharityView.as_view(), name='my_chairties')
 ]
