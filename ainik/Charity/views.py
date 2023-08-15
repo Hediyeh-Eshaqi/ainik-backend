@@ -4,7 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import UserCharity, CharityWork, Charity
 from .serializers import CharitySerializer, ChairtyWorkSerialezer
-
+from Accounts.models import User
+from Accounts.serializers import publicUserSerializer
 
 
 class CharityView(APIView):
@@ -24,6 +25,20 @@ class CharityView(APIView):
             Charity.objects.filter(id=charity_id).delete()
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_403_FORBIDDEN)
+    def get(self, request, charity_id):
+        charity = Charity.objects.filter(pk = charity_id)
+        if (len(charity)>0):
+            chairtyserializer = CharitySerializer(instance=charity, many=True)
+            userserializer = publicUserSerializer(request.user)
+            charityworks = CharityWork.objects.filter(charityName = charity_id)
+            charityworkserializer = ChairtyWorkSerialezer(instance=charityworks, many=True)
+            data = {}
+            data["creator"] = userserializer.data
+            data["info"] = chairtyserializer.data[0]
+            data["charity_works"]= charityworkserializer.data
+            return Response(data, status=status.HTTP_200_OK)
+
+        return Response([],status=status.HTTP_404_NOT_FOUND)
 
 class CharityWorkView(APIView):
     def post(self, request, charity_id):

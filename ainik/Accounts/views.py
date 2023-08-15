@@ -18,9 +18,7 @@ class MyCharityView(APIView):
 class UserPersonalityComponentsView(APIView):
     def post(self, request):
         user = request.user
-        print(user)
         isPermitted = PersonalityComponent.objects.all().filter(user = user).count()
-        print(isPermitted)
         if not isPermitted:
             request.data["user"] = user.pk
             serializer = PersonalityComponentsSerializer(data=request.data)

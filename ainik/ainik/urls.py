@@ -28,6 +28,7 @@ urlpatterns = [
     path('charity/<int:charity_id>/addwork', CharityWorkView.as_view(), name='add_charity_work'),
     path('charity/<int:charity_id>/delete/<int:work_id>', CharityWorkView.as_view(), name='delete_charity_work'),
     path('charity/<int:charity_id>/delete', CharityView.as_view(), name='delete_charity'),
+    path('charity/<int:charity_id>/', CharityView.as_view(), name='get_charity_public_data'),
     path('user/charites/', MyCharityView.as_view(), name='my_chairties'),
     path('user/personalityComponents/', UserPersonalityComponentsView.as_view(), name='create_personality_components')
     
