@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
+from django.conf import settings
 # Create your models here.
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None):
@@ -57,3 +58,27 @@ class User(AbstractBaseUser):
     @property
     def is_staff(self):
         return self.is_admin
+
+
+
+'''
+this class will store the user personality components
+that includes 8 questions of user personality. each of
+them has a value from range [1,2,3,4] means that user
+clicked which choice
+'''    
+class PersonalityComponent(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    gender = models.BooleanField()
+    age = models.IntegerField()
+    q1 = models.IntegerField()
+    q2 = models.IntegerField()
+    q3 = models.IntegerField()
+    q4 = models.IntegerField()
+    q5 = models.IntegerField()
+    q6 = models.IntegerField()
+    q7 = models.IntegerField()
+    q8 = models.IntegerField()
+      
+    
+    
