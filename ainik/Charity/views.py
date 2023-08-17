@@ -37,7 +37,6 @@ class CharityView(APIView):
             data["info"] = chairtyserializer.data[0]
             data["charity_works"]= charityworkserializer.data
             return Response(data, status=status.HTTP_200_OK)
-
         return Response([],status=status.HTTP_404_NOT_FOUND)
 
 class CharityWorkView(APIView):
@@ -58,6 +57,23 @@ class CharityWorkView(APIView):
             CharityWork.objects.filter(id=work_id).delete()
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_403_FORBIDDEN)
+
+class CharityListView(APIView):
+    def get(self, request):
+        from_index = request.query_params.get('from')
+        to_index = request.query_params.get('to')
+        queryset = Charity.objects.all()[int(from_index):int(to_index)]
+        serializer = CharitySerializer(queryset, many=True)
+        return Response(serializer.data)
+    
+    
+class CharityWorkListView(APIView):
+    def get(self, request):
+        from_index = request.query_params.get('from')
+        to_index = request.query_params.get('to')
+        queryset = CharityWork.objects.all()[int(from_index):int(to_index)]
+        serializer = ChairtyWorkSerialezer(queryset, many=True)
+        return Response(serializer.data)    
             
             
         
