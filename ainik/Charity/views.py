@@ -28,8 +28,9 @@ class CharityView(APIView):
     def get(self, request, charity_id):
         charity = Charity.objects.filter(pk = charity_id)
         if (len(charity)>0):
+            creator_user = UserCharity.objects.filter(charity=charity_id)[0]
             chairtyserializer = CharitySerializer(instance=charity, many=True)
-            userserializer = publicUserSerializer(request.user)
+            userserializer = publicUserSerializer(creator_user.user)
             charityworks = CharityWork.objects.filter(charityName = charity_id)
             charityworkserializer = ChairtyWorkSerialezer(instance=charityworks, many=True)
             data = {}

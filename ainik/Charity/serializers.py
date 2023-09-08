@@ -8,6 +8,7 @@ class CharitySerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'address', 'description')
 
 class ChairtyWorkSerialezer(serializers.ModelSerializer):
+    charityName = CharitySerializer()
     class Meta:
         model = CharityWork
         fields = ('id', 'title', 'type', 'charityName')
