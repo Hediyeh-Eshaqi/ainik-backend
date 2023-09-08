@@ -43,14 +43,13 @@ class CharityView(APIView):
 class CharityWorkView(APIView):
     def post(self, request, charity_id):
         data = request.data
-        data["charityName"] = charity_id 
-        serializer = ChairtyWorkSerialezer(data=data)
+        ch = Charity.objects.filter(pk=charity_id).first()
+        data["charityName"] = ch
+        print(data,"******")
         havePermission = UserCharity.objects.filter(charity = charity_id, user=request.user).exists()
         if havePermission:
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(status=status.HTTP_400_BAD_REQUEST)    
+            ChairtyWorkSerialezer.create(self, validated_data=data)
+            return Response(status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_403_FORBIDDEN)
     def delete(self, request, charity_id, work_id):
         havePermission = UserCharity.objects.filter(charity = charity_id, user=request.user).exists()
@@ -63,7 +62,7 @@ class CharityListView(APIView):
     def get(self, request):
         from_index = request.query_params.get('from')
         to_index = request.query_params.get('to')
-        queryset = Charity.objects.all()[int(from_index):int(to_index)]
+        queryset = Charity.objects.all().order_by('-id')[int(from_index):int(to_index)]
         serializer = CharitySerializer(queryset, many=True)
         return Response(serializer.data)
     
@@ -72,7 +71,7 @@ class CharityWorkListView(APIView):
     def get(self, request):
         from_index = request.query_params.get('from')
         to_index = request.query_params.get('to')
-        queryset = CharityWork.objects.all()[int(from_index):int(to_index)]
+        queryset = CharityWork.objects.all().order_by('-id')[int(from_index):int(to_index)]
         serializer = ChairtyWorkSerialezer(queryset, many=True)
         return Response(serializer.data)    
             

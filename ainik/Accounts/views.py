@@ -4,10 +4,31 @@ from Charity.serializers import CharitySerializer
 from rest_framework.views import APIView
 from rest_framework import status
 from Accounts.models import PersonalityComponent, User
-from Accounts.serializers import PersonalityComponentsSerializer
+from Accounts.serializers import PersonalityComponentsSerializer, publicUserSerializer
 
 
 # Create your views here.
+class UserEditionView(APIView):
+    def post(sele, request):
+        name = request.data["name"]
+        lastName = request.data["lastName"]
+        print(name, lastName)
+        try:
+            user = User.objects.filter(pk=request.user.pk).first()
+            user.firstName = name
+            user.lastName = lastName
+            user.save()
+            return (Response(status=status.HTTP_200_OK))
+
+        except:
+            return (Response(status=status.HTTP_400_BAD_REQUEST))
+    def get(self, request):
+        user = request.user
+        serializer = publicUserSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        
+
 class MyCharityView(APIView):
     def get(self, request):
         allObjects = UserCharity.objects.filter(user = request.user)

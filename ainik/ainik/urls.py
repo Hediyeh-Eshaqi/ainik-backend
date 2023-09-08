@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 from Charity.views import CharityView, CharityWorkView, CharityListView, CharityWorkListView
-from Accounts.views import MyCharityView, UserPersonalityComponentsView
+from Accounts.views import MyCharityView, UserPersonalityComponentsView, UserEditionView
 
 
 urlpatterns = [
@@ -32,6 +32,6 @@ urlpatterns = [
     path('charity/list/', CharityListView.as_view(), name='get_charity_list'),
     path('charity/charity_work/list/', CharityWorkListView.as_view(), name='get_charity_work_list'),
     path('user/charites/', MyCharityView.as_view(), name='my_chairties'),
-    path('user/personalityComponents/', UserPersonalityComponentsView.as_view(), name='create_personality_components')
-    
+    path('user/personalityComponents/', UserPersonalityComponentsView.as_view(), name='create_personality_components'),
+    path('user/edit/', UserEditionView.as_view(), name='edit_user_info')
 ]
