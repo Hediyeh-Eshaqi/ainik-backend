@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include
-from Charity.views import CharityView, CharityWorkView, CharityListView, CharityWorkListView
+from Charity.views import CharityView, CharityWorkView, CharityListView, CharityWorkListView, RecommendedCharityWork
 from Accounts.views import MyCharityView, UserPersonalityComponentsView, UserEditionView
 
 
@@ -33,5 +33,6 @@ urlpatterns = [
     path('charity/charity_work/list/', CharityWorkListView.as_view(), name='get_charity_work_list'),
     path('user/charites/', MyCharityView.as_view(), name='my_chairties'),
     path('user/personalityComponents/', UserPersonalityComponentsView.as_view(), name='create_personality_components'),
-    path('user/edit/', UserEditionView.as_view(), name='edit_user_info')
+    path('user/edit/', UserEditionView.as_view(), name='edit_user_info'),
+    path('user/recommendations/', RecommendedCharityWork.as_view(), name='get_recommended_charity_work')
 ]
